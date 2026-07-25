@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>クレイキャットの英会話教室</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-color: #f0f7f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background-color: #ffffff;
+      width: 100%;
+      max-width: 450px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .cat-avatar {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border: 4px solid #e0f2fe;
+      background-color: #e0f2fe;
+    }
+
+    .cat-avatar svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .chat-box {
+      background-color: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 15px;
+      padding: 15px;
+      min-height: 100px;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .chat-box .cat-reply {
+      font-weight: bold;
+      color: #1e293b;
+      font-size: 1.05em;
+      margin-bottom: 8px;
+    }
+
+    .chat-box .advice {
+      font-size: 0.88em;
+      color: #059669;
+      background-color: #ecfdf5;
+      padding: 8px;
+      border-radius: 8px;
+      border-left: 4px solid #10b981;
+    }
+
+    .input-form {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 16px;
+      /* スマホで自動ズームしないサイズ */
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #3b82f6;
+    }
+
+    button {
+      padding: 12px 18px;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    button:active {
+      background-color: #2563eb;
+      transform: scale(0.98);
+    }
+
+    .reset-btn {
+      background-color: #10b981;
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+    }
+
+    .reset-btn:active {
+      background-color: #059669;
+    }
+
+    .count-badge {
+      font-size: 0.85em;
+      color: #64748b;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- クレイアート風の可愛い猫イラスト (SVG) -->
+    <div class="cat-avatar">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="clayBody" cx="30%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ffb703" />
+            <stop offset="80%" stop-color="#fb8500" />
+            <stop offset="100%" stop-color="#d46900" />
+          </radialGradient>
+          <radialGradient id="clayEar" cx="30%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ffb703" />
+            <stop offset="100%" stop-color="#b55400" />
+          </radialGradient>
+          <radialGradient id="clayCheek" cx="30%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ffb5a7" />
+            <stop offset="100%" stop-color="#f8ad9d" />
+          </radialGradient>
+          <filter id="clayShadow" x="-10%" y="-10%" width="130%" height="130%">
+            <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.3" />
+          </filter>
+        </defs>
+
+        <rect width="200" height="200" fill="#e0f2fe" />
+        <polygon points="45,45 25,90 75,75" fill="url(#clayEar)" filter="url(#clayShadow)" />
+        <polygon points="155,45 175,90 125,75" fill="url(#clayEar)" filter="url(#clayShadow)" />
+        <polygon points="48,53 35,85 70,75" fill="#f8ad9d" />
+        <polygon points="152,53 165,85 130,75" fill="#f8ad9d" />
+        <circle cx="100" cy="115" r="65" fill="url(#clayBody)" filter="url(#clayShadow)" />
+        <circle cx="60" cy="125" r="12" fill="url(#clayCheek)" opacity="0.8" />
+        <circle cx="140" cy="125" r="12" fill="url(#clayCheek)" opacity="0.8" />
+
+        <!-- 動的に書き換わる目と口のパーツグループ -->
+        <g id="catFace">
+          <circle cx="75" cy="105" r="7" fill="#2b2d42" />
+          <circle cx="125" cy="105" r="7" fill="#2b2d42" />
+          <circle cx="73" cy="103" r="2.5" fill="#ffffff" />
+          <circle cx="123" cy="103" r="2.5" fill="#ffffff" />
+          <path d="M 90 122 Q 95 127 100 122 Q 105 127 110 122" stroke="#2b2d42" stroke-width="3" fill="none" stroke-linecap="round" />
+        </g>
+
+        <polygon points="100,115 95,110 105,110" fill="#f8ad9d" />
+        <line x1="35" y1="110" x2="55" y1="115" stroke="#2b2d42" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="30" y1="125" x2="52" y1="125" stroke="#2b2d42" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="165" y1="110" x2="145" y1="115" stroke="#2b2d42" stroke-width="2.5" stroke-linecap="round" />
+        <line x1="170" y1="125" x2="148" y1="125" stroke="#2b2d42" stroke-width="2.5" stroke-linecap="round" />
+      </svg>
+    </div>
+
+    <!-- 猫が喋るエリア -->
+    <div class="chat-box">
+      <div class="cat-reply" id="catReply">Hello! I'm Cleo. What is your name?</div>
+      <div class="advice" id="catAdvice" style="display:none;"></div>
+    </div>
+
+    <!-- フォーム形式にしてスマホ送信を確実化 -->
+    <form class="input-form" id="chatForm" action="javascript:void(0);">
+      <input type="text" id="userInput" placeholder="英語で返信してみてね..." autocomplete="off">
+      <button type="submit" id="sendBtn">送信</button>
+    </form>
+
+    <!-- もう一度やるボタン -->
+    <button id="resetBtn" class="reset-btn" style="display:none;">もう一度やる 🔄</button>
+
+    <div class="count-badge" id="countBadge">会話: 0 / 5 回</div>
+  </div>
+
+  <script>
+    let conversationCount = 0;
+
+    const chatForm = document.getElementById('chatForm');
+    const inputEl = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const catReplyEl = document.getElementById('catReply');
+    const catAdviceEl = document.getElementById('catAdvice');
+    const countBadge = document.getElementById('countBadge');
+    const catFaceEl = document.getElementById('catFace');
+
+    const expressionSVGs = {
+      normal: `
+      <circle cx="75" cy="105" r="7" fill="#2b2d42" />
+      <circle cx="125" cy="105" r="7" fill="#2b2d42" />
+      <circle cx="73" cy="103" r="2.5" fill="#ffffff" />
+      <circle cx="123" cy="103" r="2.5" fill="#ffffff" />
+      <path d="M 90 122 Q 95 127 100 122 Q 105 127 110 122" stroke="#2b2d42" stroke-width="3" fill="none" stroke-linecap="round" />
+    `,
+      happy: `
+      <path d="M 68 108 Q 75 98 82 108" stroke="#2b2d42" stroke-width="3.5" fill="none" stroke-linecap="round" />
+      <path d="M 118 108 Q 125 98 132 108" stroke="#2b2d42" stroke-width="3.5" fill="none" stroke-linecap="round" />
+      <path d="M 90 120 Q 100 132 110 120 Z" fill="#2b2d42" />
+    `,
+      surprised: `
+      <circle cx="75" cy="105" r="9" fill="#2b2d42" />
+      <circle cx="125" cy="105" r="9" fill="#2b2d42" />
+      <circle cx="72" cy="102" r="3.5" fill="#ffffff" />
+      <circle cx="122" cy="102" r="3.5" fill="#ffffff" />
+      <circle cx="100" cy="124" r="5" fill="#2b2d42" />
+    `,
+      celebrate: `
+      <path d="M 66 102 Q 75 92 84 102" stroke="#2b2d42" stroke-width="3.5" fill="none" stroke-linecap="round" />
+      <path d="M 116 102 Q 125 92 134 102" stroke="#2b2d42" stroke-width="3.5" fill="none" stroke-linecap="round" />
+      <path d="M 88 118 Q 100 135 112 118 Z" fill="#e63946" stroke="#2b2d42" stroke-width="2" />
+    `
+    };
+
+    function setExpression(exp) {
+      catFaceEl.innerHTML = expressionSVGs[exp] || expressionSVGs.normal;
+    }
+
+    function getCatResponse(text, count) {
+      const lower = text.toLowerCase();
+      let advice = "";
+      if (lower.includes("i am fine") && !lower.includes("i'm fine")) {
+        advice = "💡 <b>ワンポイント:</b> 「I'm fine!」と短縮形を使うと、より自然な日常会話になるよ！";
+      } else if (lower.includes("name is")) {
+        advice = "💡 <b>ワンポイント:</b> ばっちり！「Nice to meet you!（はじめまして）」を付け加えるとさらに会話が弾むよ！";
+      } else if (!lower.includes("i") && !lower.includes("my") && text.split(' ').length < 3) {
+        advice = "💡 <b>ワンポイント:</b> 単語だけでも伝わるけれど、主語（I...など）をつけて文章にするともっと良くなるよ！";
+      } else {
+        advice = "💡 <b>ワンポイント:</b> とても自然でバッチリな英語だよ！その調子！";
+      }
+
+      let reply = "";
+      let exp = "normal";
+
+      if (count === 1) {
+        reply = "Nice to meet you! How are you feeling today?";
+        exp = "happy";
+      } else if (count === 2) {
+        reply = "That's great! What did you do today?";
+        exp = "surprised";
+      } else if (count === 3) {
+        reply = "Sounds fun! Do you have any plans for tomorrow?";
+        exp = "happy";
+      } else if (count === 4) {
+        reply = "Awesome! What is your favorite food?";
+        exp = "surprised";
+      }
+
+      return { reply, advice, exp };
+    }
+
+    function handleSend(e) {
+      if (e) e.preventDefault(); // フォーム送信でのページ再読み込みを防止
+
+      const userText = inputEl.value.trim();
+      if (!userText) return;
+
+      conversationCount++;
+
+      if (conversationCount >= 5) {
+        catReplyEl.innerText = "Today's lesson is finished! 🐾";
+        catAdviceEl.style.display = "block";
+        catAdviceEl.innerHTML = "🎉 <b>今日は頑張ったね。お疲れ様！</b> また明日も一緒に英語でおしゃべりしようね！";
+
+        setExpression("celebrate");
+
+        inputEl.disabled = true;
+        sendBtn.disabled = true;
+        resetBtn.style.display = "block";
+        countBadge.innerText = "会話: 5 / 5 回（完了！）";
+        inputEl.value = "";
+        inputEl.blur(); // スマホのキーボードを閉じる
+        return;
+      }
+
+      const res = getCatResponse(userText, conversationCount);
+      catReplyEl.innerText = res.reply;
+      catAdviceEl.style.display = "block";
+      catAdviceEl.innerHTML = res.advice;
+      setExpression(res.exp);
+
+      countBadge.innerText = `会話: ${conversationCount} / 5 回`;
+      inputEl.value = "";
+    }
+
+    function resetApp() {
+      conversationCount = 0;
+      catReplyEl.innerText = "Hello! I'm Cleo. What is your name?";
+      catAdviceEl.style.display = "none";
+      catAdviceEl.innerHTML = "";
+      setExpression("normal");
+
+      inputEl.disabled = false;
+      sendBtn.disabled = false;
+      resetBtn.style.display = "none";
+      countBadge.innerText = "会話: 0 / 5 回";
+      inputEl.value = "";
+    }
+
+    // フォームのsubmitイベントで確実にキャッチ
+    chatForm.addEventListener('submit', handleSend);
+    resetBtn.addEventListener('click', resetApp);
+  </script>
+
+</body>
+
+</html>
